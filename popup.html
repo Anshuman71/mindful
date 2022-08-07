@@ -1,0 +1,67 @@
+<!-- popup.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        html {
+            padding: 10px;
+            width: 300px;
+            border-radius: 20px;
+            background-color: lavenderblush;
+        }
+
+        ul {
+            padding-inline-start: 25px;
+        }
+
+        ol {
+            margin-left: -10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        li .website {
+            color: dodgerblue;
+        }
+    </style>
+</head>
+<body>
+<img alt="icon" width="48" style="display: block; margin: 0px auto;" id="title-icon" src="/images/128.png">
+<p style="text-align: center; font-size: larger">Welcome to Mindful!</p>
+<hr>
+<p>You're Mindful of the following websites:</p>
+<ul id="origins">
+</ul>
+<p style="text-align: center">---</p>
+<div style="color: #3d3d3d">
+    <p style="margin-bottom: 0">
+        Add a website to this list:
+    </p>
+    <ol>
+        <li>
+            Right-click on the page of the website
+        </li>
+        <li>
+            Select <i>Be Mindful for</i>
+        </li>
+        <li>
+            Select hours
+        </li>
+    </ol>
+</div>
+<hr>
+<p style="text-align: center">Made with
+    <svg style="vertical-align: text-top" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" height="16" width="16">
+        <path d="M24.857 43.848a10.587 10.587 0 0 1-5.391-1.474c-4.246-2.51-9.011-5.706-12.154-10.381-2.718-4.045-5.2-10.681-1.6-19.323a10.594 10.594 0 0 1 19.29-.585 10.6 10.6 0 0 1 19.236.455c7.044 16.254-7.976 25.96-13.631 29.612a10.585 10.585 0 0 1-5.75 1.696z"
+              fill="#ff6242"></path>
+        <path d="M30.607 35.752a10.6 10.6 0 0 1-11.141.222c-4.246-2.511-9.012-5.707-12.154-10.382A19.811 19.811 0 0 1 4.2 17.929a19.211 19.211 0 0 0 3.112 14.064c3.142 4.675 7.908 7.871 12.154 10.381a10.6 10.6 0 0 0 11.141-.222C35.647 38.9 48.116 30.826 45.782 17.6c-1.757 9.471-11.006 15.458-15.175 18.152z"
+              fill="#e04122"></path>
+        <path d="M24.857 43.848a10.587 10.587 0 0 1-5.391-1.474c-4.246-2.51-9.011-5.706-12.154-10.381-2.718-4.045-5.2-10.681-1.6-19.323a10.594 10.594 0 0 1 19.29-.585 10.6 10.6 0 0 1 19.236.455c7.044 16.254-7.976 25.96-13.631 29.612a10.585 10.585 0 0 1-5.75 1.696z"
+              stroke="#45413c" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25px"></path>
+        <path d="M33.273 11.935c3.259-.925 7.013 2.532 7 5.989" stroke="#ffa694" fill="none" stroke-linecap="round"
+              stroke-linejoin="round" stroke-width="1.25px"></path>
+    </svg>
+    by <a target="_blank" href="https://theanshuman.dev">Anshuman Bhardwaj</a></p>
+<script src="popup.js"></script>
+</body>
+</html>

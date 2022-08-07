@@ -1,0 +1,36 @@
+{
+  "name": "Mindful",
+  "author": "Anshuman Bhardwaj",
+  "action": {
+    "default_icon": {
+      "16": "images/16.png",
+      "32": "images/32.png",
+      "48": "images/48.png",
+      "128": "images/128.png"
+    },
+    "default_title": "Mindful",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "images/16.png",
+    "32": "images/32.png",
+    "48": "images/48.png",
+    "128": "images/128.png"
+  },
+  "manifest_version": 3,
+  "version": "1.0",
+  "description": "Be mindful of opening websites frequently (compulsively to be more precise).",
+  "permissions": [
+    "tabs",
+    "contextMenus",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

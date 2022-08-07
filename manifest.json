@@ -21,6 +21,7 @@
   "version": "1.0",
   "description": "Be mindful of opening websites frequently (compulsively to be more precise).",
   "permissions": [
+    "webNavigation",
     "tabs",
     "contextMenus",
     "storage",

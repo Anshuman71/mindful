@@ -41,7 +41,7 @@ chrome.runtime.onInstalled.addListener(
     }
 )
 
-chrome.webNavigation.onBeforeNavigate.addListener(({tabId, url, parentFrameId, frameId}) => {
+chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameId}) => {
     if (parentFrameId === -1 && frameId === 0) { // if the main frame in this tab
         chrome.storage.local.get(['filters'], async function (filterResult) {
             const filterUrl = Object.keys(filterResult.filters).filter(domainName => url.includes(domainName))
@@ -74,7 +74,7 @@ chrome.webNavigation.onBeforeNavigate.addListener(({tabId, url, parentFrameId, f
                             }
                         )
                     }
-                    chrome.tabs.remove(tabId)
+                    await chrome.tabs.remove(tabId)
                 }
             }
         })
@@ -82,7 +82,7 @@ chrome.webNavigation.onBeforeNavigate.addListener(({tabId, url, parentFrameId, f
 })
 
 chrome.contextMenus.onClicked.addListener(async ({pageUrl, menuItemId}) => {
-        const [url, domainName] = pageUrl.match(REGEX_FOR_DOMAIN)
+        const [_, domainName] = pageUrl.match(REGEX_FOR_DOMAIN)
         const hours = parseInt(menuItemId.split('-')[0])
         const [{id: tabId}] = await chrome.tabs.query({
             active: true,

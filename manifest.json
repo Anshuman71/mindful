@@ -23,6 +23,7 @@
   "permissions": [
     "webNavigation",
     "contextMenus",
+    "notifications",
     "storage"
   ],
   "background": {

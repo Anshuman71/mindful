@@ -44,12 +44,13 @@ chrome.runtime.onInstalled.addListener(
 chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameId}) => {
     if (parentFrameId === -1 && frameId === 0) { // if the main frame in this tab
         chrome.storage.local.get(['filters'], async function (filterResult) {
-            const filterUrl = Object.keys(filterResult.filters).filter(domainName => url.includes(domainName))
-            if (filterUrl.length) {
-                const filteredOrigin = filterUrl[0]
+            const filterUrls = Object.keys(filterResult.filters).filter(domainName => url.includes(domainName))
+            if (filterUrls.length) {
+                const filteredOrigin = filterUrls[0]
                 const {lastVisitTime, hoursToWait} = filterResult.filters[filteredOrigin]
                 const hoursFromLastVisit = Math.round((Date.now() - (lastVisitTime)) / ONE_HOUR_IN_MILLISECONDS)
-                if (!lastVisitTime || hoursFromLastVisit > hoursToWait) {
+                const remainingHours = hoursToWait - hoursFromLastVisit
+                if (!lastVisitTime || remainingHours < 0) {
                     chrome.action.setBadgeText(
                         {
                             tabId,
@@ -59,10 +60,27 @@ chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameI
                     chrome.storage.local.set({
                         ['filters']: {
                             ...filterResult?.filters,
-                            [domainName]: {hoursToWait, lastVisitTime: Date.now()}
+                            [filteredOrigin]: {hoursToWait, lastVisitTime: Date.now()}
                         }
                     })
                 } else {
+
+                    chrome.notifications.create(
+                        filteredOrigin,
+                        {
+                            title: `Mindful`,
+                            type: 'basic',
+                            message: `You've cannot visit ${filteredOrigin} for another ${remainingHours} hours`,
+                            priority: 2,
+                            iconUrl: 'images/128.png'
+                        }
+                    )
+                    chrome.action.setBadgeText(
+                        {
+                            tabId,
+                            text: 'ON'
+                        }
+                    )
                     const tabs = await chrome.tabs.query(
                         {currentWindow: true}
                     )

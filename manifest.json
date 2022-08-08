@@ -22,14 +22,8 @@
   "description": "Helps you to be mindful of opening websites frequently (compulsively to be more precise).",
   "permissions": [
     "webNavigation",
-    "tabs",
     "contextMenus",
-    "storage",
-    "scripting"
-  ],
-  "host_permissions": [
-    "http://*/*",
-    "https://*/*"
+    "storage"
   ],
   "background": {
     "service_worker": "background.js"

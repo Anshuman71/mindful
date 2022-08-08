@@ -48,9 +48,9 @@ chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameI
             if (filterUrls.length) {
                 const filteredOrigin = filterUrls[0]
                 const {lastVisitTime, hoursToWait} = filterResult.filters[filteredOrigin]
-                const hoursFromLastVisit = Math.round((Date.now() - (lastVisitTime)) / ONE_HOUR_IN_MILLISECONDS)
+                const hoursFromLastVisit = Math.floor((Date.now() - (lastVisitTime)) / ONE_HOUR_IN_MILLISECONDS)
                 const remainingHours = hoursToWait - hoursFromLastVisit
-                if (!lastVisitTime || remainingHours < 0) {
+                if (remainingHours <= 0) {
                     chrome.action.setBadgeText(
                         {
                             tabId,
@@ -64,7 +64,6 @@ chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameI
                         }
                     })
                 } else {
-
                     chrome.notifications.create(
                         filteredOrigin,
                         {
@@ -73,12 +72,6 @@ chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameI
                             message: `You've cannot visit ${filteredOrigin} for another ${remainingHours} hours`,
                             priority: 2,
                             iconUrl: 'images/128.png'
-                        }
-                    )
-                    chrome.action.setBadgeText(
-                        {
-                            tabId,
-                            text: 'ON'
                         }
                     )
                     const tabs = await chrome.tabs.query(

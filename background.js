@@ -81,11 +81,14 @@ chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameI
                         await chrome.tabs.create(
                             {
                                 active: false,
-                                openerTabId: tabId
+                                openerTabId: tabs.find(item => item.active).id
                             }
                         )
                     }
-                    await chrome.tabs.remove(tabId)
+                    const newTabs = await chrome.tabs.query(
+                        {currentWindow: true, active: true}
+                    )
+                    await chrome.tabs.remove(newTabs[0].id)
                 }
             }
         })

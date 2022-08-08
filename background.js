@@ -50,7 +50,18 @@ chrome.webNavigation.onBeforeNavigate.addListener(({tabId, url}) => {
             const {lastVisitTime, hoursToWait} = filterResult.filters[filteredOrigin]
             const hoursFromLastVisit = Math.round((Date.now() - (lastVisitTime)) / ONE_HOUR_IN_MILLISECONDS)
             if (!lastVisitTime || hoursFromLastVisit > hoursToWait) {
-                chrome.storage.local.set({[filteredOrigin]: {hoursToWait, lastVisitTime: Date.now()}})
+                chrome.action.setBadgeText(
+                    {
+                        tabId,
+                        text: 'ON'
+                    }
+                )
+                chrome.storage.local.set({
+                    ['filters']: {
+                        ...filterResult?.filters,
+                        [domainName]: {hoursToWait, lastVisitTime: Date.now()}
+                    }
+                })
             } else {
                 const tabs = await chrome.tabs.query(
                     {currentWindow: true}
@@ -69,9 +80,19 @@ chrome.webNavigation.onBeforeNavigate.addListener(({tabId, url}) => {
     })
 })
 
-chrome.contextMenus.onClicked.addListener(({pageUrl, menuItemId}) => {
+chrome.contextMenus.onClicked.addListener(async ({pageUrl, menuItemId}) => {
         const [url, domainName] = pageUrl.match(REGEX_FOR_DOMAIN)
         const hours = parseInt(menuItemId.split('-')[0])
+        const [{id: tabId}] = await chrome.tabs.query({
+            active: true,
+            currentWindow: true
+        })
+        chrome.action.setBadgeText(
+            {
+                tabId,
+                text: 'ON'
+            }
+        )
         chrome.storage.local.get(['filters'], function (filterResult) {
             chrome.storage.local.set({
                 ['filters']: {

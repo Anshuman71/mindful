@@ -6,7 +6,6 @@ chrome.storage.local.get(['filters'], function (filterResult) {
         const {lastVisitTime, hoursToWait} = filterResult.filters[item]
         const hoursFromLastVisit = Math.round((Date.now() - lastVisitTime) / ONE_HOUR_IN_MILLISECONDS)
         const remainingHours = hoursToWait - hoursFromLastVisit
-        console.log({remainingHours, hoursFromLastVisit, hoursToWait})
-        return remainingHours > 0 ? `<li><span class="website">${item}</span> for <b>${remainingHours} hours</b></li>` : `<li><span class="website">${item}</span> is <i>available</i></li>`
+        return remainingHours > 0 ? `<li><span class="website">${item}</span> for <b>${remainingHours} hours</b></li>` : ``
     }).join('') : '<i>None so far :(</i>'
 })

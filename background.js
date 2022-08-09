@@ -41,15 +41,15 @@ chrome.runtime.onInstalled.addListener(
     }
 )
 
-chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameId}) => {
+chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameId, ...details}) => {
     if (parentFrameId === -1 && frameId === 0) { // if the main frame in this tab
         chrome.storage.local.get(['filters'], async function (filterResult) {
             const filterUrls = Object.keys(filterResult.filters).filter(domainName => url.includes(domainName))
             if (filterUrls.length) {
                 const filteredOrigin = filterUrls[0]
                 const {lastVisitTime, hoursToWait} = filterResult.filters[filteredOrigin]
-                const hoursFromLastVisit = Math.floor((Date.now() - (lastVisitTime)) / ONE_HOUR_IN_MILLISECONDS)
-                const remainingHours = hoursToWait - hoursFromLastVisit
+                const hoursFromLastVisit = (Date.now() - lastVisitTime) / ONE_HOUR_IN_MILLISECONDS
+                const remainingHours = Math.round(hoursToWait - hoursFromLastVisit)
                 if (remainingHours <= 0) {
                     chrome.action.setBadgeText(
                         {
@@ -98,10 +98,11 @@ chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameI
 chrome.contextMenus.onClicked.addListener(async ({pageUrl, menuItemId}) => {
         const [_, domainName] = pageUrl.match(REGEX_FOR_DOMAIN)
         const hours = parseInt(menuItemId.split('-')[0])
-        const [{id: tabId}] = await chrome.tabs.query({
+        const activeTabs = await chrome.tabs.query({
             active: true,
             currentWindow: true
         })
+        const tabId = activeTabs[0].id
         chrome.action.setBadgeText(
             {
                 tabId,

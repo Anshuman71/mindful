@@ -49,7 +49,7 @@ chrome.webNavigation.onCommitted.addListener(({tabId, url, parentFrameId, frameI
                 const filteredOrigin = filterUrls[0]
                 const {lastVisitTime, hoursToWait} = filterResult.filters[filteredOrigin]
                 const hoursFromLastVisit = (Date.now() - lastVisitTime) / ONE_HOUR_IN_MILLISECONDS
-                const remainingHours = Math.round(hoursToWait - hoursFromLastVisit)
+                const remainingHours = Math.ceil(hoursToWait - hoursFromLastVisit)
                 if (remainingHours <= 0) {
                     chrome.action.setBadgeText(
                         {

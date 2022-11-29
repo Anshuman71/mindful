@@ -1,4 +1,4 @@
-const ONE_HOUR_IN_SECONDS = 3600
+const ONE_HOUR_IN_SECONDS = 60
 const ONE_HOUR_IN_MILLISECONDS = ONE_HOUR_IN_SECONDS * 1000
 
 chrome.storage.local.get(['filters'], function (filterResult) {
